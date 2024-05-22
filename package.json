@@ -1,0 +1,24 @@
+{
+  "name": "dlesbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DonairSauce/DlesBot.git"
+  },
+  "keywords": [],
+  "author": "DonairSauce",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DonairSauce/DlesBot/issues"
+  },
+  "homepage": "https://github.com/DonairSauce/DlesBot#readme",
+  "dependencies": {
+    "discord.js": "^14.15.2",
+    "node-cron": "^3.0.3"
+  }
+}
