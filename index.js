@@ -6,7 +6,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 client.once('ready', () => {
     console.log('Ready!');
 
-    // Schedule a daily thread creation at 9 AM
+    // Schedule a daily thread creation at 5 AM
     cron.schedule('0 5 * * *', () => {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const channel = guild.channels.cache.get(process.env.CHANNEL_ID);
