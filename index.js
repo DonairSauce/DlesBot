@@ -6,7 +6,7 @@ client.once('ready', () => {
     console.log('Ready!');
 
     // Schedule a daily thread creation at 5 AM
-    cron.schedule('0 16 * * *', () => {
+    cron.schedule('20 16 * * *', () => {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const channel = guild.channels.cache.get(process.env.CHANNEL_ID);
         // Generate today's date string 
