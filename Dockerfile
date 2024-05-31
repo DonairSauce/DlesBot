@@ -8,8 +8,6 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY *.js ./
 COPY *.json ./
-RUN mkdir commands
-COPY commands/*.js ./commands/
 
 RUN npm install
 # If you are building your code for production
