@@ -1,0 +1,63 @@
+# The purpose of this GitHub Action is to build & push the docker container
+# Once built, the container will be pushed to GitHub Contariner Registry, and then DockerHub
+
+name: Create and publish a Docker image
+
+on:
+  push:
+
+env:
+  REGISTRY_GITHUB: ghcr.io
+  REGISTRY_DOCKERHUB: docker.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY_GITHUB }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-ghcr
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_GITHUB }}/${{ env.IMAGE_NAME }}
+
+
+      - name: Build and push Docker image to GitHub
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ steps.meta-ghcr.outputs.tags }}
+          labels: ${{ steps.meta-ghcr.outputs.labels }}
+      
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-dh
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_DOCKERHUB }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image to DockerHub
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ steps.meta-dh.outputs.tags }}
+          labels: ${{ steps.meta-dh.outputs.labels }}
