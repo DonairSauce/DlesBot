@@ -23,6 +23,10 @@ rest.put(
 
 client.once('ready', () => {
     console.log('Ready!');
+    console.log('CLIENT_ID:', process.env.CLIENT_ID);
+    console.log('GUILD_ID:', process.env.GUILD_ID);
+    console.log('CHANNEL_ID:', process.env.CHANNEL_ID);
+    console.log('BOT_TOKEN:', process.env.BOT_TOKEN);
 
     // Schedule a daily thread creation at 5 AM
     cron.schedule('0 5 * * *', () => {
