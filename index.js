@@ -3,7 +3,13 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const cron = require('node-cron');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions] });
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions
+    ]
+});
 
 // Register slash commands
 const commands = [
@@ -23,9 +29,8 @@ rest.put(
 
 client.once('ready', () => {
     console.log('Ready!');
-
-    // Schedule a daily thread creation at 5 AM
-    cron.schedule('0 5 * * *', () => {
+    const scheduleTime = process.env.CRON_SCHEDULE || '0 5 * * *'; // Fallback to 5 AM if not specified
+    cron.schedule(scheduleTime, () => {
         createThread();
     });
 });
@@ -67,6 +72,17 @@ function createThread() {
             reason: 'Daily thread for discussions'
         }).then(thread => {
             console.log(`Created thread: ${thread.name}`);
+
+            // Parse and add users to the thread
+            const userIds = process.env.USER_IDS.split(',');
+            userIds.forEach(userId => {
+                thread.members.add(userId.trim()).then(() => {
+                    console.log(`Added user ${userId} to thread: ${thread.name}`);
+                }).catch(error => {
+                    console.error(`Failed to add user ${userId} to thread:`, error);
+                });
+            });
+
             resolve(`Created thread: ${thread.name}`);
         }).catch(error => {
             console.error('Failed to create thread:', error);
