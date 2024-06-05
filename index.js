@@ -67,7 +67,7 @@ function createThread() {
         const dateString = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
         channel.threads.create({
-            name: `Results for ${dateString}`,
+            name: ${dateString},
             autoArchiveDuration: 1440, // 1 day
             reason: 'Daily thread for discussions'
         }).then(thread => {
