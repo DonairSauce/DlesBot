@@ -43,15 +43,3 @@ jobs:
           tags: ${{ steps.meta-ghcr.outputs.tags }}
           labels: ${{ steps.meta-ghcr.outputs.labels }}
       
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta-dh
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY_DOCKERHUB }}/${{ env.IMAGE_NAME }}
-
-      - name: Build and push Docker image to DockerHub
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: ${{ steps.meta-dh.outputs.tags }}
-          labels: ${{ steps.meta-dh.outputs.labels }}
